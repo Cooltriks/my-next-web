@@ -1,9 +1,11 @@
 //api/auth/login/route.ts
+import dbConnect from '@/lib/dbConnect';
 import User from '@/models/User';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
 export async function POST(request: Request) {
+    await dbConnect();
     // Fetch the request body
     const { email, password } = await request.json();
 

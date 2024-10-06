@@ -1,7 +1,5 @@
 // src/app/login/page.tsx
 'use client';
-import Head from 'next/head';
-import Image from 'next/image';
 import { useState } from 'react'; // Imports the useState hook from React, which is needed for managing state (form inputs, response messages, etc.) within the component.
 
 
@@ -19,7 +17,19 @@ export default function Login() {
             body: JSON.stringify({ email, password }),
         });
 
+        const data = await res.json();
+        if (data.token) {
+            //save in cookie
+            document.cookie = `token=${data.token}; path=/; max-age=${60 * 60 * 24 * 30};`;
+            //save userId in cookie
+            document.cookie = `userId=${data.userId}; path=/; max-age=${60 * 60 * 24 * 30};`;
+            //redirect
+            window.location.href = '/admin';
+        }
 
+        if (data.error) {
+            alert(data.error);
+        }
     }
     return (
         <>
